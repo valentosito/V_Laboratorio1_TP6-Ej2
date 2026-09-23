@@ -2,6 +2,7 @@
 package v_gui_tp6.ej2;
 
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 
 public class ifrmGestionProductos extends javax.swing.JInternalFrame {
@@ -64,6 +65,8 @@ public class ifrmGestionProductos extends javax.swing.JInternalFrame {
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setText("Gestión de Productos");
+
+        cmbCategoria.addActionListener(this::cmbCategoriaActionPerformed);
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel2.setText("Filtrar por Categoría:");
@@ -155,6 +158,7 @@ public class ifrmGestionProductos extends javax.swing.JInternalFrame {
 
         btnNuevo.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnNuevo.setText("Nuevo");
+        btnNuevo.addActionListener(this::btnNuevoActionPerformed);
 
         btnGuardar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnGuardar.setText("Guardar");
@@ -162,9 +166,11 @@ public class ifrmGestionProductos extends javax.swing.JInternalFrame {
 
         btnActualizar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnActualizar.setText("Actualizar");
+        btnActualizar.addActionListener(this::btnActualizarActionPerformed);
 
         btnEliminar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnEliminar.setText("Eliminar");
+        btnEliminar.addActionListener(this::btnEliminarActionPerformed);
 
         btnBuscar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/v_gui_tp6/lupa.png"))); // NOI18N
@@ -281,9 +287,12 @@ public class ifrmGestionProductos extends javax.swing.JInternalFrame {
         // Obtener stock:
         int stock = (int) spnStock.getValue();
         
-        // Obtener código que ya fue generado y seteado a través del evento de btnNuevo
-        int id = Integer.parseInt(txtCodigo.getText());
+        // Obtener id autogenerado:
+        int id = gestionProductos.generarCodigo();
             
+        // Hacer visible el id autogenerado:
+        txtCodigo.setText(String.valueOf(id));
+
         // Crear producto:
         Producto producto = new Producto(id, descripcion, precio, stock, rubro);
         
@@ -291,6 +300,148 @@ public class ifrmGestionProductos extends javax.swing.JInternalFrame {
         gestionProductos.agregarProducto(producto);
 
     }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void cmbCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbCategoriaActionPerformed
+        
+    }//GEN-LAST:event_cmbCategoriaActionPerformed
+
+    private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
+       
+        // Limpieza de campos:
+        txtCodigo.setText("");
+        txtDescripcion.setText("");
+        txtPrecio.setText("");
+        cmbRubro.setSelectedItem("");
+        spnStock.setValue(0);
+        txtDescripcion.requestFocus();
+
+    }//GEN-LAST:event_btnNuevoActionPerformed
+
+    private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
+        
+        // Validación: primero tiene que estar una fila de la JTable seleccionada.
+        
+        // Obtengo el índice de la fila seleccionada en la JTable.
+        int filaSeleccionada = tblProductos.getSelectedRow();
+
+        // Si no hay ninguna fila seleccionada, getSelectedRow() devuelve -1.
+        if (filaSeleccionada == -1) {
+            
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un producto de la tabla.");
+            return;
+        }
+        
+        // Obtener el código del producto que se está modificando:
+        int id = Integer.parseInt(txtCodigo.getText());
+        
+        // Obtener posibles nuevos cambios hechos por el usuario:
+        String descripcion = txtDescripcion.getText().trim();
+        String precioTexto = txtPrecio.getText().trim();
+        String rubroTexto = cmbRubro.getSelectedItem().toString();
+      
+        
+        // Validar campos vacíos:
+        
+        if (descripcion.isEmpty()) {
+
+            JOptionPane.showMessageDialog(this, "Debe ingresar una descripción.");
+
+            txtDescripcion.requestFocus();
+            return;
+        }
+
+        if (precioTexto.isEmpty()) {
+
+            JOptionPane.showMessageDialog(this, "Debe ingresar un precio.");
+
+            txtPrecio.requestFocus();
+            return;
+        }
+
+        double precio;
+
+        try {
+
+            precio = Double.parseDouble(precioTexto);
+
+        } catch (NumberFormatException e) {
+
+            JOptionPane.showMessageDialog(this, "El precio debe ser un número.");
+            txtPrecio.requestFocus();
+            return;
+        }
+
+        if (rubroTexto.isEmpty()) {
+
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un rubro.");
+            cmbRubro.requestFocus();
+            return;
+        }
+        
+        // Conversión:
+        Rubro rubro = Rubro.valueOf(rubroTexto);
+        
+        // Obtengo el valor actual del JSpinner:
+        int stock = (int) spnStock.getValue();
+        
+        boolean modificado = gestionProductos.modificarProducto(id, descripcion, precio, stock, rubro);
+
+         // Comprobar si el producto fue encontrado y modificado:
+        if (modificado) {
+
+            // Actualizar directamente la fila seleccionada de la JTable.
+            tblProductos.setValueAt(descripcion, filaSeleccionada, 1); // 1, 2, 3... son las columnas.
+            tblProductos.setValueAt(precio, filaSeleccionada, 2);
+            tblProductos.setValueAt(rubro, filaSeleccionada, 3);
+            tblProductos.setValueAt(stock, filaSeleccionada, 4);
+            // La columna 0 es el id, por eso queda como está.
+            
+            JOptionPane.showMessageDialog(this, "Producto actualizado correctamente.");
+
+        } else {
+            
+            JOptionPane.showMessageDialog(this, "No se encontró el producto.");
+        }
+        
+    }//GEN-LAST:event_btnActualizarActionPerformed
+
+    private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
+        
+         // Validación: primero tiene que estar una fila de la JTable seleccionada.
+        
+        // Obtengo el índice de la fila seleccionada en la JTable.
+        int filaSeleccionada = tblProductos.getSelectedRow();
+
+        // Si no hay ninguna fila seleccionada, getSelectedRow() devuelve -1.
+        if (filaSeleccionada == -1) {
+            
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un producto de la tabla.");
+            return;
+        }
+        
+         // Obtener el código del producto en cuestión:
+        int id = Integer.parseInt(txtCodigo.getText());
+        
+        Producto producto = gestionProductos.buscarPorCodigo(id);
+        
+        if (producto != null) {
+
+            // Eliminar el producto del TreeSet:
+            gestionProductos.borrarProducto(producto);
+
+            // Eliminar la fila de la JTable:
+            DefaultTableModel modelo = (DefaultTableModel) tblProductos.getModel();
+
+            modelo.removeRow(filaSeleccionada);
+
+            JOptionPane.showMessageDialog(this, "Producto eliminado correctamente.");
+
+        } else {
+
+            JOptionPane.showMessageDialog(this, "No se encontró el producto.");
+        }
+             
+    }//GEN-LAST:event_btnEliminarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
