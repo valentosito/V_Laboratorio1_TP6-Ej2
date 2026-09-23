@@ -16,10 +16,10 @@ entonces cargarProductosEnTabla() en una clase auxiliar reutilizable hubiese sid
 ### Analizar si el bloque de código repetido representa una responsabilidad independiente o no:
 
 **¿Se repite dentro de una clase?**  
-=> método
+→ método
 
 **¿Se necesita en varias clases? ¿Tiene una responsabilidad propia?**  
-=> clase auxiliar
+→ clase auxiliar
 
 **¿Necesito definir un contrato común para distintas clases?**  
-=> interfaz
+→ interfaz
