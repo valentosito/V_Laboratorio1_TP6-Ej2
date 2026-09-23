@@ -1,19 +1,23 @@
 
 package v_gui_tp6.ej2;
 
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 
 public class ifrmConsultaRubro extends javax.swing.JInternalFrame {
 
     
-    GestionDeProductos gestionProducto;
+    private GestionDeProductos gestionProductos;
     
     
     // INYECCIÓN DE DEPENDENCIAS POR CONSTRUCTOR (gestionProductos):
-    public ifrmConsultaRubro(GestionDeProductos gestionProducto) {
+    public ifrmConsultaRubro(GestionDeProductos gestionProductos) {
            
         initComponents();
         
-        this.gestionProducto = gestionProducto;
+        this.gestionProductos = gestionProductos;
         
         cmbRubro.addItem("Todos");
         cmbRubro.addItem(Rubro.COMESTIBLE.toString());
@@ -52,50 +56,91 @@ public class ifrmConsultaRubro extends javax.swing.JInternalFrame {
         jLabel2.setText("Rubro:");
 
         btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/v_gui_tp6/ej2/lupa.png"))); // NOI18N
+        btnBuscar.addActionListener(this::btnBuscarActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(35, 35, 35)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(35, Short.MAX_VALUE))
+                .addGap(86, 86, 86)
+                .addComponent(jLabel2)
+                .addGap(18, 18, 18)
+                .addComponent(cmbRubro, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(71, 71, 71))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(55, 55, 55)
-                        .addComponent(jLabel1))
+                        .addGap(35, 35, 35)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(86, 86, 86)
-                        .addComponent(jLabel2)
-                        .addGap(18, 18, 18)
-                        .addComponent(cmbRubro, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(51, 51, 51))
+                        .addGap(55, 55, 55)
+                        .addComponent(jLabel1)))
+                .addContainerGap(35, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(27, 27, 27)
-                        .addComponent(jLabel1)
-                        .addGap(35, 35, 35)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(cmbRubro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(38, 38, 38)
-                        .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(27, 27, 27)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(cmbRubro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabel2))
+                    .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(32, 32, 32)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(32, Short.MAX_VALUE))
+                .addContainerGap(29, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+    
+        // Obtener el rubro seleccionado:
+        String rubroTexto = cmbRubro.getSelectedItem().toString();
+
+        // Validar:
+        if (rubroTexto.isEmpty()) {
+            
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un rubro.");
+            cmbRubro.requestFocus();
+            return;
+        }
+
+        Rubro rubro = Rubro.valueOf(rubroTexto);
+
+        ArrayList<Producto> productosEncontrados = gestionProductos.buscarPorRubro(rubro);
+
+        // Obtener el modelo de la JTable:
+        DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+
+        // Limpiar la tabla:
+        modelo.setRowCount(0);
+
+        // Cargar los resultados.
+        for (Producto producto : productosEncontrados) {
+
+            modelo.addRow(new Object[]{
+                producto.getId(),
+                producto.getDescripcion(),
+                producto.getPrecio(),
+                producto.getRubro(),
+                producto.getStock()
+            });
+        }
+
+        if (productosEncontrados.isEmpty()) {
+            
+            JOptionPane.showMessageDialog(this, "No se encontraron productos.");
+        }
+
+        
+    }//GEN-LAST:event_btnBuscarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

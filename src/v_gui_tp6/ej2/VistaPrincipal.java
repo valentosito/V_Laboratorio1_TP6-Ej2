@@ -92,7 +92,7 @@ public class VistaPrincipal extends javax.swing.JFrame {
 
     private void mnuiConsultaPrecioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuiConsultaPrecioActionPerformed
         
-        ifrmConsultaPrecio ventana = new ifrmConsultaPrecio();
+        ifrmConsultaPrecio ventana = new ifrmConsultaPrecio(gestionProductos);
 
         jDesktopPane1.add(ventana);
 

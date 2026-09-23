@@ -100,8 +100,7 @@ public class GestionDeProductos {
         // Por este motivo, dejo al int id como un atributo fijo.
         
     }    
-        
-    
+           
         
     // CONSULTAS
    

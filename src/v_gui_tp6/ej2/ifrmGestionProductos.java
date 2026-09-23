@@ -79,6 +79,11 @@ public class ifrmGestionProductos extends javax.swing.JInternalFrame {
                 "Código", "Descripción", "Precio", "Categoría", "Stock"
             }
         ));
+        tblProductos.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblProductosMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblProductos);
 
         panelIngresoDatos.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -105,7 +110,7 @@ public class ifrmGestionProductos extends javax.swing.JInternalFrame {
         panelIngresoDatosLayout.setHorizontalGroup(
             panelIngresoDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelIngresoDatosLayout.createSequentialGroup()
-                .addGap(20, 20, 20)
+                .addGap(30, 30, 30)
                 .addGroup(panelIngresoDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(panelIngresoDatosLayout.createSequentialGroup()
                         .addComponent(jLabel3)
@@ -125,7 +130,7 @@ public class ifrmGestionProductos extends javax.swing.JInternalFrame {
                             .addGroup(panelIngresoDatosLayout.createSequentialGroup()
                                 .addComponent(spnStock, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE)))))
-                .addContainerGap(63, Short.MAX_VALUE))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
         panelIngresoDatosLayout.setVerticalGroup(
             panelIngresoDatosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -174,27 +179,12 @@ public class ifrmGestionProductos extends javax.swing.JInternalFrame {
 
         btnBuscar.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnBuscar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/v_gui_tp6/lupa.png"))); // NOI18N
+        btnBuscar.addActionListener(this::btnBuscarActionPerformed);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(panelIngresoDatos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(37, 37, 37)
-                .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(80, 80, 80))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(64, 64, 64)
-                .addComponent(btnNuevo)
-                .addGap(70, 70, 70)
-                .addComponent(btnGuardar)
-                .addGap(70, 70, 70)
-                .addComponent(btnActualizar)
-                .addGap(70, 70, 70)
-                .addComponent(btnEliminar)
-                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -209,6 +199,28 @@ public class ifrmGestionProductos extends javax.swing.JInternalFrame {
                         .addGap(35, 35, 35)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 579, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(35, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(64, 64, 64)
+                        .addComponent(btnNuevo)
+                        .addGap(70, 70, 70)
+                        .addComponent(btnGuardar)
+                        .addGap(70, 70, 70)
+                        .addComponent(btnActualizar)
+                        .addGap(70, 70, 70))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(panelIngresoDatos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(38, 38, 38)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(8, 8, 8)
+                        .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(55, 55, 55))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnEliminar)
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -221,20 +233,20 @@ public class ifrmGestionProductos extends javax.swing.JInternalFrame {
                     .addComponent(cmbCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(30, 30, 30)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(29, 29, 29)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(43, 43, 43)
-                        .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(panelIngresoDatos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(btnNuevo, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(20, 20, 20))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(29, 29, 29)
-                        .addComponent(panelIngresoDatos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnNuevo, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnGuardar, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(20, 20, 20))
+                        .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
         pack();
@@ -317,6 +329,9 @@ public class ifrmGestionProductos extends javax.swing.JInternalFrame {
 
     }//GEN-LAST:event_btnNuevoActionPerformed
 
+    
+    
+    // Evento que toma los datos modificados de los campos, modifica el objeto y actualiza la fila:
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
         
         // Validación: primero tiene que estar una fila de la JTable seleccionada.
@@ -405,6 +420,8 @@ public class ifrmGestionProductos extends javax.swing.JInternalFrame {
         
     }//GEN-LAST:event_btnActualizarActionPerformed
 
+    
+    // Evento que toma el código de la fila seleccionada, busca el objeto, lo elimina del TreeSet y de la fila del JTable.
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         
          // Validación: primero tiene que estar una fila de la JTable seleccionada.
@@ -419,9 +436,9 @@ public class ifrmGestionProductos extends javax.swing.JInternalFrame {
             return;
         }
         
-         // Obtener el código del producto en cuestión:
-        int id = Integer.parseInt(txtCodigo.getText());
-        
+         // Obtener el código del producto selecccionado a partir de la JTable:
+        int id = (int) tblProductos.getValueAt(filaSeleccionada, 0);
+
         Producto producto = gestionProductos.buscarPorCodigo(id);
         
         if (producto != null) {
@@ -442,6 +459,84 @@ public class ifrmGestionProductos extends javax.swing.JInternalFrame {
         }
              
     }//GEN-LAST:event_btnEliminarActionPerformed
+
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+            
+        // Pedir al usuario, mediante ventana extra, que ingrese el código del producto que desea buscar: 
+        String codigoTexto = JOptionPane.showInputDialog(this, "Ingrese el código del producto: ");
+        
+        // Si el usuario presionó Cancelar o cerró la ventana:
+        if (codigoTexto == null) {
+            
+            return;
+        }
+
+        codigoTexto = codigoTexto.trim();
+
+        // Validar campo vacío:
+        if (codigoTexto.isEmpty()) {        
+            JOptionPane.showMessageDialog(this, "Debe ingresar un código.");
+            return;
+        }
+       
+        int codigo;
+
+        try {
+            
+            codigo = Integer.parseInt(codigoTexto);
+
+        } catch (NumberFormatException e) {
+
+            JOptionPane.showMessageDialog(this, "El código debe ser un número.");
+            return;
+        }
+
+        Producto producto = gestionProductos.buscarPorCodigo(codigo);
+
+        if (producto == null) {
+
+            JOptionPane.showMessageDialog(this, "No se encontró un producto con ese código.");
+            return;
+        }
+    
+        // Cargar en el formulario los datos del producto encontrado:
+        txtCodigo.setText(String.valueOf(producto.getId()));
+        txtDescripcion.setText(producto.getDescripcion());
+        txtPrecio.setText(String.valueOf(producto.getPrecio()));
+        cmbRubro.setSelectedItem(producto.getRubro().toString());
+        spnStock.setValue(producto.getStock());
+        
+    }//GEN-LAST:event_btnBuscarActionPerformed
+
+    
+    // Evento que detecta un clic sobre un producto de la tabla y carga los datos correspondientes en los campos del formulario.
+    private void tblProductosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblProductosMouseClicked
+        
+        // Obtener la fila sobre la que hizo clic el usuario:
+        int filaSeleccionada = tblProductos.getSelectedRow();
+
+        if (filaSeleccionada == -1) {
+            return;
+        }
+
+        // Obtener el código (columna 0) de la fila seleccionada:
+        int id = (int) tblProductos.getValueAt(filaSeleccionada, 0);
+
+        Producto producto = gestionProductos.buscarPorCodigo(id);
+
+        if (producto == null) {
+            return;
+        }
+
+        // Llenar campos: 
+        
+        txtCodigo.setText(String.valueOf(producto.getId()));
+        txtDescripcion.setText(producto.getDescripcion());
+        txtPrecio.setText(String.valueOf(producto.getPrecio()));
+        cmbRubro.setSelectedItem(producto.getRubro().toString());
+        spnStock.setValue(producto.getStock());
+        
+    }//GEN-LAST:event_tblProductosMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

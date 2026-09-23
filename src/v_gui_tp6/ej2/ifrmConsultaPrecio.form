@@ -129,6 +129,9 @@
           <Image iconType="3" name="/v_gui_tp6/ej2/lupa.png"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnBuscarActionPerformed"/>
+      </Events>
     </Component>
   </SubComponents>
 </Form>
