@@ -1,19 +1,34 @@
 
 package v_gui_tp6.ej2;
 
+import java.util.ArrayList;
 import java.util.TreeSet;
 
 
 public class GestionDeProductos {
     
-    TreeSet<Producto> setDeProductos;
+    private TreeSet<Producto> setDeProductos;
+    private int idProximo; // Variable para ID autogenerado 
+    
     
     // AGREGACIÓN: GestionDeProductos ◇──────> Producto
-
     public GestionDeProductos() {
+        
         this.setDeProductos = new TreeSet<>();
+        idProximo = 1; // Inicializo contador
     }
 
+    
+    // Método que obtiene el siguiente código cada vez que es invocado desde el evento del botón Guardar.
+    public int generarCodigo() {
+        
+        // Devuelve primero, incrementa después:
+        return idProximo++;
+        
+        // En cambio return ++idProximo, incrementa primero.
+    }
+    
+    
     public TreeSet<Producto> getSetDeProductos() {
         return setDeProductos;
     }
@@ -100,5 +115,55 @@ public class GestionDeProductos {
 
         return null;
     }
+    
+    
+    public ArrayList<Producto> buscarPorNombre(String descripcion){
+        
+        ArrayList<Producto> productosEncontrados = new ArrayList<>();
 
+        for (Producto p : setDeProductos) {
+            
+            if (p.getDescripcion().trim().equalsIgnoreCase(descripcion.trim())) {
+                
+                productosEncontrados.add(p);
+            }
+        }
+
+        return productosEncontrados;
+
+    }
+    
+    
+    public ArrayList<Producto> buscarPorPrecio(double min, double max) {
+
+        ArrayList<Producto> productosEncontrados = new ArrayList<>();
+
+        for (Producto p : setDeProductos) {
+            
+            if (p.getPrecio() >= min && p.getPrecio() <= max) {
+                
+                productosEncontrados.add(p);
+            }
+        }
+
+        return productosEncontrados;
+    }
+    
+    
+    public ArrayList<Producto> buscarPorRubro(Rubro rubro) {
+
+        ArrayList<Producto> productosEncontrados = new ArrayList<>();
+
+        for (Producto p : setDeProductos) {
+            
+            if (p.getRubro() == rubro) {
+                
+                productosEncontrados.add(p);
+            }
+        }
+
+        return productosEncontrados;
+    }
+    
+    
 }
