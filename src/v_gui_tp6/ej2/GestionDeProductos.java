@@ -104,6 +104,20 @@ public class GestionDeProductos {
         
     // CONSULTAS
    
+    
+    public ArrayList<Producto> listarTodos() {
+
+        ArrayList<Producto> productos = new ArrayList<>();
+
+        for (Producto p : setDeProductos) {
+            
+            productos.add(p);
+        }
+
+        return productos;
+    }
+    
+    
     public Producto buscarPorCodigo(int id) {
 
         for (Producto p : setDeProductos) {

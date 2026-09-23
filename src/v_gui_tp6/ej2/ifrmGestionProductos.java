@@ -1,6 +1,7 @@
 
 package v_gui_tp6.ej2;
 
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -66,6 +67,7 @@ public class ifrmGestionProductos extends javax.swing.JInternalFrame {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setText("Gestión de Productos");
 
+        cmbCategoria.addItemListener(this::cmbCategoriaItemStateChanged);
         cmbCategoria.addActionListener(this::cmbCategoriaActionPerformed);
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -104,6 +106,8 @@ public class ifrmGestionProductos extends javax.swing.JInternalFrame {
         jLabel7.setText("Stock:");
 
         txtCodigo.setEditable(false);
+
+        spnStock.setPreferredSize(new java.awt.Dimension(70, 22));
 
         javax.swing.GroupLayout panelIngresoDatosLayout = new javax.swing.GroupLayout(panelIngresoDatos);
         panelIngresoDatos.setLayout(panelIngresoDatosLayout);
@@ -253,7 +257,6 @@ public class ifrmGestionProductos extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-       
         
         String descripcion = txtDescripcion.getText().trim();
         String precioTexto = txtPrecio.getText().trim();
@@ -311,10 +314,24 @@ public class ifrmGestionProductos extends javax.swing.JInternalFrame {
         // Agregar producto:
         gestionProductos.agregarProducto(producto);
 
+        gestionProductos.agregarProducto(producto);
+
+        DefaultTableModel modelo = (DefaultTableModel) tblProductos.getModel();
+
+        modelo.addRow(new Object[]{
+            producto.getId(),
+            producto.getDescripcion(),
+            producto.getPrecio(),
+            producto.getRubro(),
+            producto.getStock()
+        });
+        
+        cmbCategoria.setSelectedItem("Todas");
+        
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void cmbCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbCategoriaActionPerformed
-        
+
     }//GEN-LAST:event_cmbCategoriaActionPerformed
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
@@ -537,6 +554,48 @@ public class ifrmGestionProductos extends javax.swing.JInternalFrame {
         spnStock.setValue(producto.getStock());
         
     }//GEN-LAST:event_tblProductosMouseClicked
+
+    private void cmbCategoriaItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_cmbCategoriaItemStateChanged
+        
+        // Solo actuar cuando se selecciona un elemento:
+        if (evt.getStateChange() != java.awt.event.ItemEvent.SELECTED) {
+            
+            return;
+        }
+
+        String rubroTexto = cmbCategoria.getSelectedItem().toString();
+
+        DefaultTableModel modelo = (DefaultTableModel) tblProductos.getModel();
+
+        // Limpiar la tabla.
+        modelo.setRowCount(0);
+
+        ArrayList<Producto> productosEncontrados;
+
+        // Si se seleccionó "Todas":
+        if (rubroTexto.equals("Todas")) {
+
+            productosEncontrados = gestionProductos.listarTodos();
+
+        } else {
+
+            Rubro rubro = Rubro.valueOf(rubroTexto);
+
+            productosEncontrados = gestionProductos.buscarPorRubro(rubro);
+        }
+
+        for (Producto producto : productosEncontrados) {
+
+            modelo.addRow(new Object[]{
+                producto.getId(),
+                producto.getDescripcion(),
+                producto.getPrecio(),
+                producto.getRubro(),
+                producto.getStock()
+            });
+        }            
+        
+    }//GEN-LAST:event_cmbCategoriaItemStateChanged
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
