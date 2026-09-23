@@ -2,15 +2,18 @@
 package v_gui_tp6.ej2;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import java.util.Collections;
+import java.util.Comparator;
 
 
 public class ifrmConsultaNombre extends javax.swing.JInternalFrame {
 
     
     private GestionDeProductos gestionProductos;
-
+    
     
     // INYECCIÓN DE DEPENDENCIAS POR CONSTRUCTOR (gestionProductos):
     public ifrmConsultaNombre(GestionDeProductos gestionProductos) {
@@ -114,6 +117,17 @@ public class ifrmConsultaNombre extends javax.swing.JInternalFrame {
 
         
         ArrayList<Producto> productosEncontrados = gestionProductos.buscarPorNombre(descripcion);
+        
+        
+        // Ordeno ArrayList utilizando el método de clase anónima Comparator directamente en sort:
+        
+        Collections.sort(productosEncontrados, new Comparator<Producto>(){
+
+            @Override
+            public int compare(Producto p1, Producto p2) {
+                return p1.getDescripcion().compareToIgnoreCase(p2.getDescripcion());
+            }
+        });
 
         DefaultTableModel modelo = (DefaultTableModel) tblProductos.getModel();
 

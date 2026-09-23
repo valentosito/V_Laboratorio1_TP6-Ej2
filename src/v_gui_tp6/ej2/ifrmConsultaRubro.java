@@ -2,6 +2,8 @@
 package v_gui_tp6.ej2;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -116,6 +118,15 @@ public class ifrmConsultaRubro extends javax.swing.JInternalFrame {
 
         ArrayList<Producto> productosEncontrados = gestionProductos.buscarPorRubro(rubro);
 
+        // Ordeno ArrayList utilizando el método de clase anónima Comparator directamente en sort:
+        Collections.sort(productosEncontrados, new Comparator<Producto>(){
+
+            @Override
+            public int compare(Producto p1, Producto p2) {
+                return p1.getRubro().compareTo(p2.getRubro());
+            }
+        });
+        
         // Obtener el modelo de la JTable:
         DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
 

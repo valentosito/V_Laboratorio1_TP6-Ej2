@@ -2,6 +2,8 @@
 package v_gui_tp6.ej2;
 
 
+
+
 public class Producto implements Comparable<Producto>{
     
     

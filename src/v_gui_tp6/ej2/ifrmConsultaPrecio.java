@@ -2,6 +2,8 @@
 package v_gui_tp6.ej2;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -139,9 +141,18 @@ public class ifrmConsultaPrecio extends javax.swing.JInternalFrame {
             return;
         }
 
-
         ArrayList<Producto> productosEncontrados = gestionProductos.buscarPorPrecio(min, max);
 
+        // Ordeno ArrayList utilizando el método de clase anónima Comparator directamente en sort:
+        Collections.sort(productosEncontrados, new Comparator<Producto>(){
+
+            @Override
+            public int compare(Producto p1, Producto p2) {
+                return Double.compare(p1.getPrecio(), p2.getPrecio());
+            }
+        });
+        
+        
         // Obtener el modelo de la JTable:
         DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
 
